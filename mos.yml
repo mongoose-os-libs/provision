@@ -1,0 +1,16 @@
+author: mongoose-os
+type: lib
+description: A device provisioning library
+version: 1.0
+
+sources:
+  - src
+
+config_schema:
+
+libs:
+
+tags:
+  - c
+
+manifest_version: 2017-09-29
