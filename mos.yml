@@ -6,11 +6,34 @@ version: 1.0
 sources:
   - src
 
-config_schema:
-
 libs:
 
 tags:
   - c
+
+config_schema:
+  - ["provision", "o", {title: "Provision library settings"}]
+  - ["provision.button", "o", {title: "Reset button settings"}]
+  - ["provision.button.pin", "i", -1, {title: "Reset button GPIO pin"}]
+  - ["provision.button.pull", "i", 1, {title: "Pull mode: 1 - up, 2 - down"}]
+  - ["provision.button.hold_ms", "i", 0, {title: "Hold interval in milliseconds. -1 to disable, 0 to reset on reboot, > 0 to reset on long press."}]
+
+conds:
+  - when: mos.platform == "esp32"
+    apply:
+      config_schema:
+        - ["provision.button.pin", 0]
+  - when: mos.platform == "esp8266"
+    apply:
+      config_schema:
+        - ["provision.button.pin", 0]
+  - when: mos.platform == "cc3200"
+    apply:
+      config_schema:
+        - ["provision.button.pin", 15]
+  - when: mos.platform == "cc3220"
+    apply:
+      config_schema:
+        - ["provision.button.pin", 15]
 
 manifest_version: 2017-09-29
