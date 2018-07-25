@@ -11,7 +11,7 @@ static void reset_to_factory_defaults(void) {
 
 static void button_timer_cb(void *arg) {
   int pin = mgos_sys_config_get_provision_button_pin();
-  enum mgos_gpio_pull_type pull = (enum mgos_gpio_pull_type) arg;
+  enum mgos_gpio_pull_type pull = (enum mgos_gpio_pull_type)(intptr_t) arg;
   int n = 0; /* Number of times the button is reported down */
   mgos_gpio_disable_int(pin);
   for (int i = 0; i < 10; i++) {
@@ -54,10 +54,9 @@ bool mgos_provision_init(void) {
     button_timer_cb((void *) pull);
   } else {
     /* Set a long press handler. Note: user code can override it! */
-    mgos_gpio_set_button_handler(pin, pull,
-                                 pull == MGOS_GPIO_PULL_UP
-                                     ? MGOS_GPIO_INT_EDGE_NEG
-                                     : MGOS_GPIO_INT_EDGE_POS,
+    mgos_gpio_set_button_handler(pin, pull, pull == MGOS_GPIO_PULL_UP
+                                                ? MGOS_GPIO_INT_EDGE_NEG
+                                                : MGOS_GPIO_INT_EDGE_POS,
                                  50, button_down_cb, (void *) pull);
   }
   return true;
