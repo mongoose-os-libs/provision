@@ -3,7 +3,7 @@
 static mgos_timer_id s_hold_timer = MGOS_INVALID_TIMER_ID;
 
 static void reset_to_factory_defaults(void) {
-  LOG(LL_INFO, ("Reseting to factory defaults"));
+  LOG(LL_INFO, ("Resetting to factory defaults"));
   mgos_config_reset(MGOS_CONFIG_LEVEL_USER);
   mgos_fs_gc();
   mgos_system_restart_after(100);
@@ -11,9 +11,10 @@ static void reset_to_factory_defaults(void) {
 
 static void button_timer_cb(void *arg) {
   int pin = mgos_sys_config_get_provision_button_pin();
-  enum mgos_gpio_pull_type pull = (enum mgos_gpio_pull_type)(intptr_t) arg;
+  int hold = mgos_sys_config_get_provision_button_hold_ms();
+  enum mgos_gpio_pull_type pull =
+      (enum mgos_gpio_pull_type) mgos_sys_config_get_provision_button_pull();
   int n = 0; /* Number of times the button is reported down */
-  mgos_gpio_disable_int(pin);
   for (int i = 0; i < 10; i++) {
     int level = mgos_gpio_read(pin);
     if (pull == MGOS_GPIO_PULL_UP && level == 0) n++;
@@ -21,12 +22,9 @@ static void button_timer_cb(void *arg) {
     mgos_msleep(1);
   }
   if (s_hold_timer != MGOS_INVALID_TIMER_ID) mgos_clear_timer(s_hold_timer);
-  if (n > 7) {
-    reset_to_factory_defaults();
-  } else {
-    LOG(LL_INFO, ("Button released, NOT resetting"));
-  }
-  mgos_gpio_enable_int(pin);
+  if (n > 7) reset_to_factory_defaults();
+  if (hold > 0) mgos_gpio_enable_int(pin);
+  (void) arg;
 }
 
 static void button_down_cb(int pin, void *arg) {
@@ -43,21 +41,23 @@ bool mgos_provision_init(void) {
   enum mgos_gpio_pull_type pull =
       (enum mgos_gpio_pull_type) mgos_sys_config_get_provision_button_pull();
 
-  LOG(LL_INFO, ("Factory reset via button: pin %d (%s), hold_ms %d (%s)", pin,
-                pin < 0 ? "disabled" : "enabled", hold,
-                hold == 0 ? "reset on reboot" : "reset on long press"));
-
   if (pin < 0 || hold < 0) return true; /* disabled */
+
+  LOG(LL_INFO, ("Factory reset via button: pin %d, pull %d, hold_ms %d (%s)",
+                pin, pull, hold, hold == 0 ? "hold on boot" : "long press"));
+
+  mgos_gpio_set_mode(pin, MGOS_GPIO_MODE_INPUT);
+  mgos_gpio_set_pull(pin, pull);
 
   if (hold == 0) {
     /* Check if button is pressed on reboot */
-    button_timer_cb((void *) pull);
+    button_timer_cb(NULL);
   } else {
     /* Set a long press handler. Note: user code can override it! */
     mgos_gpio_set_button_handler(pin, pull, pull == MGOS_GPIO_PULL_UP
                                                 ? MGOS_GPIO_INT_EDGE_NEG
                                                 : MGOS_GPIO_INT_EDGE_POS,
-                                 50, button_down_cb, (void *) pull);
+                                 50, button_down_cb, NULL);
   }
   return true;
 }
