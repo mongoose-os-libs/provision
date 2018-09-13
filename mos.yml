@@ -10,6 +10,7 @@ libs:
 
 tags:
   - c
+  - docs:misc:Device Provisioning
 
 config_schema:
   - ["provision", "o", {title: "Provision library settings"}]
