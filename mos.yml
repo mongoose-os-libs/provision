@@ -14,9 +14,9 @@ tags:
 
 config_schema:
   - ["provision", "o", {title: "Provision library settings"}]
-  - ["provision.button", "o", {title: "Reset button settings"}]
-  - ["provision.button.pin", "i", -1, {title: "Reset button GPIO pin"}]
-  - ["provision.button.pull", "i", 1, {title: "Pull mode: 1 - up, 2 - down"}]
-  - ["provision.button.hold_ms", "i", 0, {title: "Hold interval in milliseconds. -1 to disable, 0 to reset on reboot, > 0 to reset on long press."}]
+  - ["provision.btn", "o", {title: "Reset button settings"}]
+  - ["provision.btn.pin", "i", -1, {title: "Reset button GPIO pin"}]
+  - ["provision.btn.pull_up", "i", false, {title: "True if button is pulled up when inactive"}]
+  - ["provision.btn.hold_ms", "i", 0, {title: "Hold interval in milliseconds. -1 to disable, 0 to reset if held on boot, > 0 to reset if held at runtime for this long."}]
 
 manifest_version: 2017-09-29
