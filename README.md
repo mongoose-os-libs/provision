@@ -16,11 +16,11 @@ Reset to factory defaults is done by configuring a reset button, attached to a
 certain GPIO pin. Two modes are possible:
 
 - Hold the reset button and reboot the device while holding a button.
-  For this, set `provision.button.pin` to a non-negative value, and set 
-  `provision.button.hold_ms` to `0`.
+  For this, set `provision.btn.pin` to a non-negative value, and set 
+  `provision.btn.hold_ms` to `0`.
 - Just hold the reset button pressed for a long time.
-  For this, set `provision.button.pin` to a non-negative value, and set 
-  `provision.button.hold_ms` to a positive value, e.g. `5000` - 5 seconds.
+  For this, set `provision.btn.pin` to a non-negative value, and set 
+  `provision.btn.hold_ms` to a positive value, e.g. `5000` - 5 seconds.
 
 
 ## Reset to factory defaults on bad WiFi credentials
