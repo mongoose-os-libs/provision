@@ -37,6 +37,7 @@ static void button_down_cb(int pin, void *arg) {
 }
 
 bool mgos_provision_init(void) {
+  char buf[8];
   int pin = mgos_sys_config_get_provision_btn_pin();
   int hold = mgos_sys_config_get_provision_btn_hold_ms();
   enum mgos_gpio_pull_type pull =
@@ -45,8 +46,10 @@ bool mgos_provision_init(void) {
 
   if (pin < 0 || hold < 0) return true; /* disabled */
 
-  LOG(LL_INFO, ("Factory reset via button: pin %d, pull %d, hold_ms %d (%s)",
-                pin, pull, hold, hold == 0 ? "hold on boot" : "long press"));
+  LOG(LL_INFO,
+      ("Factory reset button: pin %s, pull %s, hold_ms %d (%s)",
+       mgos_gpio_str(pin, buf), (pull == MGOS_GPIO_PULL_UP ? "up" : "down"),
+       hold, hold == 0 ? "hold on boot" : "long press"));
 
   mgos_gpio_set_mode(pin, MGOS_GPIO_MODE_INPUT);
   mgos_gpio_set_pull(pin, pull);
