@@ -98,16 +98,12 @@ static void mgos_provision_ev_cb(int ev, void *evd, void *arg) {
   switch (ev) {
     case MGOS_NET_EV_DISCONNECTED:
     case MGOS_NET_EV_CONNECTING:
-      if (s_cur_state == MGOS_PROVISION_ST_NOT_PROVISIONED) {
-        mgos_provision_set_cur_state(MGOS_PROVISION_ST_NETWORK_CONFIGURED);
-      }
+      mgos_provision_set_cur_state(MGOS_PROVISION_ST_NETWORK_CONFIGURED);
       break;
     case MGOS_NET_EV_CONNECTED:
       break;
     case MGOS_NET_EV_IP_ACQUIRED:
-      if (s_cur_state == MGOS_PROVISION_ST_NETWORK_CONFIGURED) {
-        mgos_provision_set_cur_state(MGOS_PROVISION_ST_NETWORK_CONNECTED);
-      }
+      mgos_provision_set_cur_state(MGOS_PROVISION_ST_NETWORK_CONNECTED);
       break;
     case MGOS_EVENT_CLOUD_CONNECTED: {
       mgos_provision_set_cur_state(MGOS_PROVISION_ST_CLOUD_CONNECTED);
