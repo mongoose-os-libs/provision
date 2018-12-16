@@ -56,6 +56,7 @@ static void mgos_provision_timer_cb(void *arg) {
 }
 
 static void mgos_provision_set_max_state_no_event(int new_state) {
+  int timeout = mgos_sys_config_get_provision_timeout();
   int cur_max_state = mgos_provision_get_max_state();
   if (new_state == cur_max_state) return;
   int stable_state = mgos_sys_config_get_provision_stable_state();
@@ -66,8 +67,8 @@ static void mgos_provision_set_max_state_no_event(int new_state) {
       }
       mgos_clear_timer(s_provision_timer_id);
       s_provision_timer_id = MGOS_INVALID_TIMER_ID;
-    } else if (new_state > 0 && s_provision_timer_id == MGOS_INVALID_TIMER_ID) {
-      int timeout = mgos_sys_config_get_provision_timeout();
+    } else if (new_state > 0 && s_provision_timer_id == MGOS_INVALID_TIMER_ID &&
+               timeout > 0) {
       LOG(LL_INFO, ("Setting provisioning timeout for %d seconds", timeout));
       s_provision_timer_id =
           mgos_set_timer(timeout * 1000, 0, mgos_provision_timer_cb, NULL);
