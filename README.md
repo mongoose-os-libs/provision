@@ -21,6 +21,9 @@ certain GPIO pin. Two modes are possible:
 - Just hold the reset button pressed for a long time.
   For this, set `provision.btn.pin` to a non-negative value, and set 
   `provision.btn.hold_ms` to a positive value, e.g. `5000` - 5 seconds.
+  If you also set `provision.btn.inhibit_after_s` value to non-zero
+  number of seconds, reset button will be inhibited once uptime reaches
+  this value (reset button will stop working N seconds after boot).
 
 
 ## Reset to factory defaults on bad WiFi credentials

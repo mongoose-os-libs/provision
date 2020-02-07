@@ -21,6 +21,7 @@
 #include "mgos_event.h"
 #include "mgos_gpio.h"
 #include "mgos_timers.h"
+#include "mgos_time.h"
 
 static mgos_timer_id s_hold_timer = MGOS_INVALID_TIMER_ID;
 
@@ -54,6 +55,17 @@ static void button_timer_cb(void *arg) {
 static void button_down_cb(int pin, void *arg) {
   int duration = mgos_sys_config_get_provision_btn_hold_ms();
   if (s_hold_timer != MGOS_INVALID_TIMER_ID) mgos_clear_timer(s_hold_timer);
+
+  /* Don't do anything if reset period ended */
+  if(
+    (mgos_sys_config_get_provision_btn_inhibit_after_s() > 0) &&
+    (mgos_uptime() > mgos_sys_config_get_provision_btn_inhibit_after_s())
+  ) {
+    LOG(LL_INFO, ("Ignoring reset button press. (Uptime higher than %d secs)",
+	mgos_sys_config_get_provision_btn_inhibit_after_s()));
+    return;
+  }
+
   LOG(LL_INFO, ("Button pressed, setting %d ms timer", duration));
   s_hold_timer = mgos_set_timer(duration, 0, button_timer_cb, arg);
   (void) pin;
