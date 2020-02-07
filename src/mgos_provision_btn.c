@@ -82,9 +82,10 @@ bool mgos_provision_btn_init(void) {
     button_timer_cb(NULL);
   } else {
     /* Set a long press handler. Note: user code can override it! */
-    mgos_gpio_set_button_handler(pin, pull, pull == MGOS_GPIO_PULL_UP
-                                                ? MGOS_GPIO_INT_EDGE_NEG
-                                                : MGOS_GPIO_INT_EDGE_POS,
+    mgos_gpio_set_button_handler(pin, pull,
+                                 pull == MGOS_GPIO_PULL_UP
+                                     ? MGOS_GPIO_INT_EDGE_NEG
+                                     : MGOS_GPIO_INT_EDGE_POS,
                                  50, button_down_cb, NULL);
   }
 
