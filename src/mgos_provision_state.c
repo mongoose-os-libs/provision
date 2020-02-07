@@ -33,7 +33,8 @@ static void mgos_provision_set_max_state_no_event(int new_state);
 
 static void mgos_provision_send_event(void) {
   struct mgos_provision_state_changed_arg ev_arg = {
-      .cur_state = s_cur_state, .max_state = mgos_provision_get_max_state(),
+      .cur_state = s_cur_state,
+      .max_state = mgos_provision_get_max_state(),
   };
   mgos_event_trigger(MGOS_PROVISION_EV_STATE_CHANGED, &ev_arg);
 }
