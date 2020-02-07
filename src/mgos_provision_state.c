@@ -15,10 +15,12 @@
  * limitations under the License.
  */
 
+#include "mgos_provision.h"
+
 #include "mgos.h"
+
 #include "mgos_gpio.h"
 #include "mgos_net.h"
-#include "mgos_provision.h"
 #include "mgos_sys_config.h"
 #include "mgos_timers.h"
 

@@ -16,6 +16,7 @@
  */
 
 #include "mgos.h"
+
 #include "mgos_gpio.h"
 #include "mgos_provision.h"
 
