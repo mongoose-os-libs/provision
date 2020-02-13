@@ -37,6 +37,10 @@ enum mgos_provision_event {
   MGOS_PROVISION_EV_STATE_CHANGED = MGOS_PROVISION_EV_BASE,
   /* Provisioning failed and reset is being performed. Arg: NULL */
   MGOS_PROVISION_EV_RESET,
+  /* Reset button was pressed. Arg: NULL */
+  MGOS_PROVISION_EV_RESET_BTN_PRESSED,
+  /* Reset button was pressed and not inhibited by uptime. Arg: NULL */
+  MGOS_PROVISION_EV_RESET_BTN_ACTIVATED,
 };
 
 struct mgos_provision_state_changed_arg {
