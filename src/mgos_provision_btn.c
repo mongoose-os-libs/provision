@@ -56,6 +56,8 @@ static void button_down_cb(int pin, void *arg) {
   int duration = mgos_sys_config_get_provision_btn_hold_ms();
   if (s_hold_timer != MGOS_INVALID_TIMER_ID) mgos_clear_timer(s_hold_timer);
 
+  mgos_event_trigger(MGOS_PROVISION_EV_RESET_BTN_PRESSED, NULL);
+
   /* Don't do anything if reset period ended */
   if ((mgos_sys_config_get_provision_btn_inhibit_after_s() > 0) &&
       (mgos_uptime() > mgos_sys_config_get_provision_btn_inhibit_after_s())) {
@@ -66,6 +68,9 @@ static void button_down_cb(int pin, void *arg) {
 
   LOG(LL_INFO, ("Button pressed, setting %d ms timer", duration));
   s_hold_timer = mgos_set_timer(duration, 0, button_timer_cb, arg);
+
+  mgos_event_trigger(MGOS_PROVISION_EV_RESET_BTN_ACTIVATED, NULL);
+
   (void) pin;
 }
 
