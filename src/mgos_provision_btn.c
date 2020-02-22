@@ -102,6 +102,11 @@ bool mgos_provision_btn_init(void) {
                                      ? MGOS_GPIO_INT_EDGE_NEG
                                      : MGOS_GPIO_INT_EDGE_POS,
                                  50, button_down_cb, NULL);
+
+    /* Start timer when button is already pressed during boot */
+    if (mgos_gpio_read(pin) != mgos_sys_config_get_provision_btn_pull_up()) {
+      button_down_cb(pin, NULL);
+    }
   }
 
   return true;
