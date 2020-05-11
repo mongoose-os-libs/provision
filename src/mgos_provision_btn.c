@@ -89,11 +89,12 @@ bool mgos_provision_btn_init(void) {
        mgos_gpio_str(pin, buf), (pull == MGOS_GPIO_PULL_UP ? "up" : "down"),
        hold, hold == 0 ? "hold on boot" : "long press"));
 
-  mgos_gpio_set_mode(pin, MGOS_GPIO_MODE_INPUT);
-  mgos_gpio_set_pull(pin, pull);
-
+  
   if (hold == 0) {
     /* Check if button is pressed on reboot */
+    mgos_gpio_set_mode(pin, MGOS_GPIO_MODE_INPUT);
+    mgos_gpio_set_pull(pin, pull);
+
     button_timer_cb(NULL);
   } else {
     /* Set a long press handler. Note: user code can override it! */
