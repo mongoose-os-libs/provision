@@ -25,6 +25,8 @@ certain GPIO pin. Two modes are possible:
   number of seconds, reset button will be inhibited once uptime reaches
   this value (reset button will stop working N seconds after boot).
 
+If the button is active low (pulled low on button press) set the 
+`provision.btn.pull_up` value to true.
 
 ## Reset to factory defaults on bad WiFi credentials
 
