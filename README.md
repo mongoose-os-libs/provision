@@ -81,12 +81,13 @@ If `provision.led.pin` is configured, an event handler will be installed that wi
 ```javascript
 "provision": {
   "configured": false,  // Set to true when first time connected to WiFi
-  "button": {
+  "btn": {
     "pin": 17,      // Reset button GPIO number. Negative value disables reset
                     // button functionality. Default: arch-specific.
     "hold_ms": 0,   // Number of milliseconds to hold to trigger a factory reset.
                     // If negative, disable. If 0, reset on boot.
                     // If positive, reset when pressed for that many milliseconds.
+    "pull_up"       // Set to true if button is pulled up when inactive (active low)
   }
 }
 ```
