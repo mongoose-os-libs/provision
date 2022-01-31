@@ -108,6 +108,6 @@ bool mgos_provision_btn_init(void) {
       button_down_cb(pin, NULL);
     }
   }
-
+  (void) buf;
   return true;
 }
